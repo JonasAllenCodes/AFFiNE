@@ -750,7 +750,7 @@ __metadata:
     "@nestjs/schedule": "npm:^4.0.1"
     "@nestjs/serve-static": "npm:^4.0.2"
     "@nestjs/testing": "npm:^10.3.7"
-    "@nestjs/throttler": "npm:5.2.0"
+    "@nestjs/throttler": "npm:6.1.0"
     "@nestjs/websockets": "npm:^10.3.7"
     "@node-rs/argon2": "npm:^1.8.0"
     "@node-rs/crc32": "npm:^1.10.0"
@@ -8754,14 +8754,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/throttler@npm:5.2.0":
-  version: 5.2.0
-  resolution: "@nestjs/throttler@npm:5.2.0"
+"@nestjs/throttler@npm:6.1.0":
+  version: 6.1.0
+  resolution: "@nestjs/throttler@npm:6.1.0"
   peerDependencies:
     "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     "@nestjs/core": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13 || ^0.2.0
-  checksum: 10/ec5805cdba895a61f4cb0f998fb8cd16f3c7a86b41fb699c8eb15a0b74aac9dc7da306e8cd4b95bd6c8d0042bb5a4ee4c479b270a5af9bc6ff781839e9fab5b3
+  checksum: 10/3407361c7649f56facae39111913d4c8afb6c73554e99a65d90ae5c862565487f699ebe137d05976110a33a90f4d98b12698666e667d15a4d14c9af63d2a0922
   languageName: node
   linkType: hard
 
