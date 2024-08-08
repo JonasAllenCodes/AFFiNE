@@ -63,7 +63,7 @@ export class UserFriendlyError extends Error {
     // disallow message override for `internal_server_error`
     // to avoid leak internal information to user
     let msg =
-      name === 'internal_server_error' ? defaultMsg : (message ?? defaultMsg);
+      name === 'internal_server_error' ? defaultMsg : message ?? defaultMsg;
 
     if (typeof msg === 'function') {
       msg = msg(args);
@@ -87,6 +87,17 @@ export class UserFriendlyError extends Error {
     };
   }
 
+  toText() {
+    const json = this.toJSON();
+    return [
+      `Status: ${json.status}`,
+      `Type: ${json.type}`,
+      `Name: ${json.name}`,
+      `Message: ${json.message}`,
+      `Data: ${JSON.stringify(json.data)}`,
+    ].join('\n');
+  }
+
   log(context: string) {
     // ignore all user behavior error log
     if (this.type !== 'internal_server_error') {
@@ -95,7 +106,7 @@ export class UserFriendlyError extends Error {
 
     new Logger(context).error(
       'Internal server error',
-      this.cause ? ((this.cause as any).stack ?? this.cause) : this.stack
+      this.cause ? (this.cause as any).stack ?? this.cause : this.stack
     );
   }
 }

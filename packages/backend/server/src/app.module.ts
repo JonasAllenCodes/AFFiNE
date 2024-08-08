@@ -14,7 +14,9 @@ import { AppController } from './app.controller';
 import { AuthModule } from './core/auth';
 import { ADD_ENABLED_FEATURES, ServerConfigModule } from './core/config';
 import { DocModule } from './core/doc';
+import { DocRendererModule } from './core/doc-renderer';
 import { FeatureModule } from './core/features';
+import { PermissionModule } from './core/permission';
 import { QuotaModule } from './core/quota';
 import { CustomSetupModule } from './core/setup';
 import { StorageModule } from './core/storage';
@@ -44,17 +46,9 @@ import { ENABLED_PLUGINS } from './plugins/registry';
 
 export const FunctionalityModules = [
   ConfigModule.forRoot(),
-  ScheduleModule.forRoot(),
-  EventModule,
   CacheModule,
-  MutexModule,
   PrismaModule,
   MetricsModule,
-  RateLimiterModule,
-  MailModule,
-  StorageProviderModule,
-  HelpersModule,
-  ErrorModule,
 ];
 
 function filterOptionalModule(
@@ -150,33 +144,23 @@ function buildAppModule() {
   const factor = new AppModuleBuilder(AFFiNE);
 
   factor
-    // common fundamental modules
+    // basic
     .use(...FunctionalityModules)
-    // auth
-    .use(AuthModule)
-
-    // business modules
-    .use(DocModule)
-
-    // sync server only
-    .useIf(config => config.flavor.sync, WebSocketModule, SyncModule)
-
-    // graphql server only
     .useIf(
       config => config.flavor.graphql,
-      ServerConfigModule,
-      GqlModule,
-      StorageModule,
-      UserModule,
-      WorkspaceModule,
-      FeatureModule,
-      QuotaModule
+      ScheduleModule.forRoot(),
+      EventModule,
+      MutexModule,
+      RateLimiterModule,
+      MailModule,
+      StorageProviderModule,
+      HelpersModule,
+      ErrorModule,
+      GqlModule
     )
-
-    // self hosted server only
+    .useIf(config => config.flavor.sync, WebSocketModule)
     .useIf(
       config => config.isSelfhosted,
-      CustomSetupModule,
       ServeStaticModule.forRoot({
         rootPath: join('/app', 'static'),
         exclude: ['/admin*'],
@@ -185,7 +169,25 @@ function buildAppModule() {
         rootPath: join('/app', 'static', 'admin'),
         serveRoot: '/admin',
       })
-    );
+    )
+
+    // authentication & authorization
+    .use(AuthModule, PermissionModule)
+
+    // business
+    .use(DocModule)
+    .useIf(config => config.flavor.sync, SyncModule)
+    .useIf(
+      config => config.flavor.graphql,
+      ServerConfigModule,
+      StorageModule,
+      UserModule,
+      WorkspaceModule,
+      FeatureModule,
+      QuotaModule
+    )
+    .useIf(config => config.isSelfhosted, CustomSetupModule)
+    .useIf(config => config.flavor.renderer, DocRendererModule);
 
   // plugin modules
   ENABLED_PLUGINS.forEach(name => {
