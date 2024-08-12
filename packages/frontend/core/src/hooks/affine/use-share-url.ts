@@ -3,6 +3,7 @@ import { track } from '@affine/core/mixpanel';
 import { getAffineCloudBaseUrl } from '@affine/core/modules/cloud/services/fetch';
 import { useI18n } from '@affine/i18n';
 import type { Disposable } from '@blocksuite/global/utils';
+import type { DocMode } from '@toeverything/infra';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useActiveBlocksuiteEditor } from '../use-block-suite-editor';
@@ -13,6 +14,7 @@ type UseSharingUrl = {
   workspaceId: string;
   pageId: string;
   urlType: UrlType;
+  shareView?: DocMode;
 };
 
 const generateUrl = ({
@@ -20,6 +22,7 @@ const generateUrl = ({
   pageId,
   urlType,
   blockId,
+  shareView,
 }: UseSharingUrl & { blockId?: string }) => {
   // to generate a private url like https://app.affine.app/workspace/123/456
   // or https://app.affine.app/workspace/123/456#block-123
@@ -30,7 +33,7 @@ const generateUrl = ({
 
   try {
     return new URL(
-      `${baseUrl}/${urlType}/${workspaceId}/${pageId}${urlType === 'workspace' && blockId ? `#${blockId}` : ''}`
+      `${baseUrl}/${urlType}/${workspaceId}/${pageId}${shareView ? `?view=${shareView}` : ''}${urlType === 'workspace' && blockId ? `#${blockId}` : ''}`
     ).toString();
   } catch (e) {
     return null;
@@ -41,6 +44,7 @@ export const useSharingUrl = ({
   workspaceId,
   pageId,
   urlType,
+  shareView,
 }: UseSharingUrl) => {
   const t = useI18n();
   const [blockId, setBlockId] = useState<string>('');
@@ -52,8 +56,9 @@ export const useSharingUrl = ({
         pageId,
         urlType,
         blockId: blockId.length > 0 ? blockId : undefined,
+        shareView,
       }),
-    [workspaceId, pageId, urlType, blockId]
+    [workspaceId, pageId, urlType, blockId, shareView]
   );
 
   const onClickCopyLink = useCallback(() => {
