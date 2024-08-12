@@ -9,15 +9,79 @@ export const headerStyle = style({
   padding: '0 4px',
   gap: '4px',
 });
+export const content = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+});
 export const menuStyle = style({
-  width: '410px',
+  width: '390px',
   height: 'auto',
   padding: '12px',
-  transform: 'translateX(-10px)',
+});
+export const menuTriggerStyle = style({
+  width: '150px',
+  padding: '4px 10px',
+  justifyContent: 'space-between',
 });
 export const menuItemStyle = style({
   padding: '4px',
+});
+export const publicItemRowStyle = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+});
+export const publicMenuItemPrefixStyle = style({
+  fontSize: cssVar('fontH5'),
+  color: cssVar('iconColor'),
+  marginRight: '8px',
+});
+export const DoneIconStyle = style({
+  color: cssVar('primaryColor'),
+  fontSize: cssVar('fontH5'),
+  marginLeft: '8px',
+});
+export const exportItemStyle = style({
+  padding: '4px',
   transition: 'all 0.3s',
+});
+export const copyLinkTriggerStyle = style({
+  width: '100%',
+  padding: '4px 12px',
+  display: 'flex',
+  justifyContent: 'end',
+  alignItems: 'center',
+  gap: '4px',
+  position: 'relative',
+  backgroundColor: cssVar('primaryColor'),
+  color: cssVar('pureWhite'),
+  ':hover': {
+    backgroundColor: cssVar('primaryColor'),
+    color: cssVar('pureWhite'),
+  },
+});
+globalStyle(`${copyLinkTriggerStyle} svg`, {
+  color: cssVar('pureWhite'),
+  transform: 'translateX(2px)',
+});
+export const copyLinkShortcutStyle = style({
+  position: 'absolute',
+  right: '36px',
+  paddingRight: '8px',
+  opacity: 0.5,
+  lineHeight: '20px',
+});
+export const copyLinkMenuItemStyle = style({
+  padding: '4px',
+  transition: 'all 0.3s',
+});
+export const dividerStyle = style({
+  width: '1px',
+  height: '100%',
+  backgroundColor: cssVar('black10'),
+  position: 'absolute',
+  right: '0',
 });
 export const descriptionStyle = style({
   wordWrap: 'break-word',
@@ -26,16 +90,6 @@ export const descriptionStyle = style({
   color: cssVar('textSecondaryColor'),
   textAlign: 'left',
   padding: '0 6px',
-});
-export const buttonStyle = style({
-  marginTop: '18px',
-});
-export const actionsStyle = style({
-  display: 'flex',
-  gap: '9px',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'flex-start',
 });
 export const containerStyle = style({
   display: 'flex',
@@ -46,25 +100,13 @@ export const containerStyle = style({
 export const indicatorContainerStyle = style({
   position: 'relative',
 });
-export const inputButtonRowStyle = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: '16px',
-});
 export const titleContainerStyle = style({
   display: 'flex',
   alignItems: 'center',
-  gap: '4px',
-  fontSize: cssVar('fontSm'),
-  fontWeight: 500,
-  lineHeight: '22px',
-  padding: '0 4px',
-});
-export const subTitleStyle = style({
-  fontSize: cssVar('fontSm'),
-  fontWeight: 500,
-  lineHeight: '22px',
+  fontSize: cssVar('fontXs'),
+  color: cssVar('textSecondaryColor'),
+  fontWeight: 400,
+  padding: '8px 4px 0 4px',
 });
 export const columnContainerStyle = style({
   display: 'flex',
@@ -78,23 +120,11 @@ export const rowContainerStyle = style({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '12px',
   padding: '4px',
 });
-export const radioButtonGroup = style({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  padding: '2px',
-  minWidth: '154px',
-  maxWidth: '250px',
-});
-export const radioButton = style({
-  color: cssVar('textSecondaryColor'),
-  selectors: {
-    '&[data-state="checked"]': {
-      color: cssVar('textPrimaryColor'),
-    },
-  },
+export const labelStyle = style({
+  fontSize: cssVar('fontSm'),
+  fontWeight: 500,
 });
 export const disableSharePage = style({
   color: cssVar('errorColor'),
@@ -117,12 +147,6 @@ export const cloudSvgContainer = style({
   bottom: '0',
   right: '0',
 });
-export const shareIconStyle = style({
-  fontSize: '16px',
-  color: cssVar('iconColor'),
-  display: 'flex',
-  alignItems: 'center',
-});
 export const shareLinkStyle = style({
   padding: '4px',
   fontSize: cssVar('fontXs'),
@@ -137,12 +161,33 @@ globalStyle(`${shareLinkStyle} > span`, {
 globalStyle(`${shareLinkStyle} > div > svg`, {
   color: cssVar('linkColor'),
 });
-export const shareButton = style({
+export const buttonContainer = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  fontWeight: 500,
+});
+export const button = style({
+  padding: '6px 8px',
   height: 32,
-  padding: '0px 8px',
 });
 export const shortcutStyle = style({
   fontSize: cssVar('fontXs'),
   color: cssVar('textSecondaryColor'),
   fontWeight: 400,
+});
+export const openWorkspaceSettingsStyle = style({
+  color: cssVar('linkColor'),
+  fontSize: cssVar('fontXs'),
+  fontWeight: 500,
+  display: 'flex',
+  gap: '8px',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  width: '100%',
+  padding: '4px',
+  cursor: 'pointer',
+});
+globalStyle(`${openWorkspaceSettingsStyle} svg`, {
+  color: cssVar('linkColor'),
 });

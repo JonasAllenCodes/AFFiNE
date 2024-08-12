@@ -26,7 +26,7 @@ export const tabsList = style({
 
 export const tabsTrigger = style({
   all: 'unset',
-
+  fontWeight: 500,
   padding: '6px 4px',
   cursor: 'pointer',
   fontSize: cssVar('fontSm'),

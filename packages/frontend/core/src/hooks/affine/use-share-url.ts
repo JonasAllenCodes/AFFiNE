@@ -4,7 +4,7 @@ import { getAffineCloudBaseUrl } from '@affine/core/modules/cloud/services/fetch
 import { useI18n } from '@affine/i18n';
 import type { Disposable } from '@blocksuite/global/utils';
 import type { DocMode } from '@toeverything/infra';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useActiveBlocksuiteEditor } from '../use-block-suite-editor';
 
@@ -44,44 +44,42 @@ export const useSharingUrl = ({
   workspaceId,
   pageId,
   urlType,
-  shareView,
 }: UseSharingUrl) => {
   const t = useI18n();
   const [blockId, setBlockId] = useState<string>('');
   const [editor] = useActiveBlocksuiteEditor();
-  const sharingUrl = useMemo(
-    () =>
-      generateUrl({
+
+  const onClickCopyLink = useCallback(
+    (view: DocMode) => {
+      const sharingUrl = generateUrl({
         workspaceId,
         pageId,
         urlType,
         blockId: blockId.length > 0 ? blockId : undefined,
-        shareView,
-      }),
-    [workspaceId, pageId, urlType, blockId, shareView]
-  );
-
-  const onClickCopyLink = useCallback(() => {
-    if (sharingUrl) {
-      navigator.clipboard
-        .writeText(sharingUrl)
-        .then(() => {
-          notify.success({
-            title: t['Copied link to clipboard'](),
+        shareView: view,
+      });
+      if (sharingUrl) {
+        navigator.clipboard
+          .writeText(sharingUrl)
+          .then(() => {
+            notify.success({
+              title: t['Copied link to clipboard'](),
+            });
+          })
+          .catch(err => {
+            console.error(err);
           });
-        })
-        .catch(err => {
-          console.error(err);
+        track.$.sharePanel.$.copyShareLink({
+          type: urlType === 'share' ? 'public' : 'private',
         });
-      track.$.sharePanel.$.copyShareLink({
-        type: urlType === 'share' ? 'public' : 'private',
-      });
-    } else {
-      notify.error({
-        title: 'Network not available',
-      });
-    }
-  }, [sharingUrl, t, urlType]);
+      } else {
+        notify.error({
+          title: 'Network not available',
+        });
+      }
+    },
+    [workspaceId, pageId, urlType, blockId, t]
+  );
 
   useEffect(() => {
     let disposable: Disposable | null = null;
@@ -112,7 +110,6 @@ export const useSharingUrl = ({
     };
   }, [editor?.host?.selection, urlType]);
   return {
-    sharingUrl,
     onClickCopyLink,
   };
 };
