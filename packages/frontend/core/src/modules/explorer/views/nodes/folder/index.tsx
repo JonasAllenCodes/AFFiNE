@@ -780,6 +780,7 @@ export const ExplorerFolderNodeFolder = ({
       onDrop={handleDropOnFolder}
       defaultRenaming={defaultRenaming}
       renameable
+      extractEmojiAsIcon
       reorderable={reorderable}
       collapsed={collapsed}
       setCollapsed={handleCollapsedChange}

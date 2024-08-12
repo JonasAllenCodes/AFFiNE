@@ -23,6 +23,7 @@ import {
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import clsx from 'clsx';
+import Graphemer from 'graphemer';
 import type { To } from 'history';
 import { useAtomValue } from 'jotai';
 import {
@@ -59,7 +60,7 @@ export type ExplorerTreeNodeIcon = React.ComponentType<{
 export const ExplorerTreeNode = ({
   children,
   icon: Icon,
-  name,
+  name: rawName,
   onClick,
   to,
   active,
@@ -68,6 +69,7 @@ export const ExplorerTreeNode = ({
   onRename,
   disabled,
   collapsed,
+  extractEmojiAsIcon,
   setCollapsed,
   canDrop,
   reorderable = true,
@@ -87,6 +89,7 @@ export const ExplorerTreeNode = ({
   active?: boolean;
   reorderable?: boolean;
   defaultRenaming?: boolean;
+  extractEmojiAsIcon?: boolean;
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
   renameable?: boolean;
@@ -117,6 +120,27 @@ export const ExplorerTreeNode = ({
   const [renaming, setRenaming] = useState(defaultRenaming);
   const [lastInGroup, setLastInGroup] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const { emoji, name } = useMemo(() => {
+    if (!extractEmojiAsIcon || !rawName) {
+      return {
+        emoji: null,
+        name: rawName,
+      };
+    }
+    const isStartsWithEmoji = /^(\p{Emoji_Presentation})/u.test(rawName);
+    if (isStartsWithEmoji) {
+      // emoji like "👨🏻‍❤️‍💋‍👨🏻" are combined. Graphemer can handle these.
+      const emojiEnd = Graphemer.nextBreak(rawName, 0);
+      return {
+        emoji: rawName.substring(0, emojiEnd),
+        name: rawName.substring(emojiEnd),
+      };
+    }
+    return {
+      emoji: null,
+      name: rawName,
+    };
+  }, [extractEmojiAsIcon, rawName]);
   const { dragRef, dragging, CustomDragPreview } = useDraggable<
     AffineDNDData & { draggable: { __cid: string } }
   >(
@@ -299,34 +323,36 @@ export const ExplorerTreeNode = ({
       data-active={active}
       data-disabled={disabled}
     >
-      {Icon && (
-        <div className={styles.iconsContainer}>
-          <div
-            data-disabled={disabled}
-            onClick={handleCollapsedChange}
-            data-testid="explorer-collapsed-button"
-            className={styles.collapsedIconContainer}
-          >
-            <ArrowDownSmallIcon
-              className={styles.collapsedIcon}
-              data-collapsed={collapsed !== false}
-            />
-          </div>
-          <Icon
-            className={styles.icon}
-            draggedOver={draggedOver && !isSelfDraggedOver}
-            treeInstruction={treeInstruction}
-            collapsed={collapsed}
+      <div className={styles.iconsContainer}>
+        <div
+          data-disabled={disabled}
+          onClick={handleCollapsedChange}
+          data-testid="explorer-collapsed-button"
+          className={styles.collapsedIconContainer}
+        >
+          <ArrowDownSmallIcon
+            className={styles.collapsedIcon}
+            data-collapsed={collapsed !== false}
           />
         </div>
-      )}
+        {emoji
+          ? emoji
+          : Icon && (
+              <Icon
+                className={styles.icon}
+                draggedOver={draggedOver && !isSelfDraggedOver}
+                treeInstruction={treeInstruction}
+                collapsed={collapsed}
+              />
+            )}
+      </div>
       {renameable && renaming && (
         <RenameModal
           open
           width={sidebarWidth - 32}
           onOpenChange={setRenaming}
           onRename={handleRename}
-          currentName={name ?? ''}
+          currentName={rawName ?? ''}
         >
           <div className={styles.itemRenameAnchor} />
         </RenameModal>
