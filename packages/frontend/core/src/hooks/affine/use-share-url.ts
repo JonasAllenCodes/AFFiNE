@@ -91,13 +91,13 @@ export const useSharingUrl = ({
     // if the block is already selected, set the blockId
     const currentBlockSelection = selectManager.find('block');
     if (currentBlockSelection) {
-      setBlockId(`#${currentBlockSelection.blockId}`);
+      setBlockId(currentBlockSelection.blockId);
     }
 
     disposable = selectManager.slots.changed.on(selections => {
       setBlockId(prev => {
         if (selections[0] && selections[0].type === 'block') {
-          return `#${selections[0].blockId}`;
+          return selections[0].blockId;
         } else if (prev.length > 0) {
           return '';
         } else {

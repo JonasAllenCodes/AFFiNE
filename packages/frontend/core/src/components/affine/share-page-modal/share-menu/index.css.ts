@@ -1,4 +1,5 @@
 import { cssVar } from '@toeverything/theme';
+import { cssVarV2 } from '@toeverything/theme/v2';
 import { globalStyle, style } from '@vanilla-extract/css';
 export const headerStyle = style({
   display: 'flex',
@@ -34,11 +35,11 @@ export const publicItemRowStyle = style({
 });
 export const publicMenuItemPrefixStyle = style({
   fontSize: cssVar('fontH5'),
-  color: cssVar('iconColor'),
+  color: cssVarV2('icon/primary'),
   marginRight: '8px',
 });
 export const DoneIconStyle = style({
-  color: cssVar('primaryColor'),
+  color: cssVarV2('button/primary'),
   fontSize: cssVar('fontH5'),
   marginLeft: '8px',
 });
@@ -54,15 +55,15 @@ export const copyLinkTriggerStyle = style({
   alignItems: 'center',
   gap: '4px',
   position: 'relative',
-  backgroundColor: cssVar('primaryColor'),
-  color: cssVar('pureWhite'),
+  backgroundColor: cssVarV2('button/primary'),
+  color: cssVarV2('button/pureWhiteText'),
   ':hover': {
-    backgroundColor: cssVar('primaryColor'),
-    color: cssVar('pureWhite'),
+    backgroundColor: cssVarV2('button/primary'),
+    color: cssVarV2('button/pureWhiteText'),
   },
 });
 globalStyle(`${copyLinkTriggerStyle} svg`, {
-  color: cssVar('pureWhite'),
+  color: cssVarV2('button/pureWhiteText'),
   transform: 'translateX(2px)',
 });
 export const copyLinkShortcutStyle = style({
@@ -79,7 +80,7 @@ export const copyLinkMenuItemStyle = style({
 export const dividerStyle = style({
   width: '1px',
   height: '100%',
-  backgroundColor: cssVar('black10'),
+  backgroundColor: cssVarV2('button/innerBlackBorder'),
   position: 'absolute',
   right: '0',
 });
@@ -87,7 +88,7 @@ export const descriptionStyle = style({
   wordWrap: 'break-word',
   fontSize: cssVar('fontXs'),
   lineHeight: '20px',
-  color: cssVar('textSecondaryColor'),
+  color: cssVarV2('text/secondary'),
   textAlign: 'left',
   padding: '0 6px',
 });
@@ -104,7 +105,7 @@ export const titleContainerStyle = style({
   display: 'flex',
   alignItems: 'center',
   fontSize: cssVar('fontXs'),
-  color: cssVar('textSecondaryColor'),
+  color: cssVarV2('text/secondary'),
   fontWeight: 400,
   padding: '8px 4px 0 4px',
 });
@@ -127,14 +128,14 @@ export const labelStyle = style({
   fontWeight: 500,
 });
 export const disableSharePage = style({
-  color: cssVar('errorColor'),
+  color: cssVarV2('button/error'),
 });
 export const localSharePage = style({
   padding: '12px 8px',
   display: 'flex',
   alignItems: 'center',
   borderRadius: '8px',
-  backgroundColor: cssVar('backgroundSecondaryColor'),
+  backgroundColor: cssVarV2('layer/background/secondary'),
   minHeight: '84px',
   position: 'relative',
 });
@@ -156,10 +157,10 @@ export const shareLinkStyle = style({
   gap: '4px',
 });
 globalStyle(`${shareLinkStyle} > span`, {
-  color: cssVar('linkColor'),
+  color: cssVarV2('text/link'),
 });
 globalStyle(`${shareLinkStyle} > div > svg`, {
-  color: cssVar('linkColor'),
+  color: cssVarV2('text/link'),
 });
 export const buttonContainer = style({
   display: 'flex',
@@ -173,11 +174,11 @@ export const button = style({
 });
 export const shortcutStyle = style({
   fontSize: cssVar('fontXs'),
-  color: cssVar('textSecondaryColor'),
+  color: cssVarV2('text/secondary'),
   fontWeight: 400,
 });
 export const openWorkspaceSettingsStyle = style({
-  color: cssVar('linkColor'),
+  color: cssVarV2('text/link'),
   fontSize: cssVar('fontXs'),
   fontWeight: 500,
   display: 'flex',
@@ -189,5 +190,5 @@ export const openWorkspaceSettingsStyle = style({
   cursor: 'pointer',
 });
 globalStyle(`${openWorkspaceSettingsStyle} svg`, {
-  color: cssVar('linkColor'),
+  color: cssVarV2('text/link'),
 });
